@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskMaster Pro - Professional Task Management</title>
+  <link rel="stylesheet" href="../style.css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="header-left">
+          <h1><i class="fas fa-rocket"></i> TaskMaster Pro</h1>
+          <p class="subtitle">Professional Task Management & Productivity Suite</p>
+        </div>
+        <div class="header-right">
+          <button class="help-btn" id="helpBtn" title="Help & Support">
+            <i class="fas fa-question-circle"></i>
+          </button>
+          <button class="settings-btn" id="settingsBtn" title="Settings">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="todo-container">
+        <!-- Search and Quick Actions -->
+        <div class="search-section">
+          <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search tasks..." maxlength="100">
+            <button class="clear-search" id="clearSearch" style="display: none;">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="quick-actions">
+            <button class="quick-btn" id="bulkComplete">
+              <i class="fas fa-check-double"></i>
+              <span>Complete All</span>
+            </button>
+            <button class="quick-btn" id="bulkDelete">
+              <i class="fas fa-trash"></i>
+              <span>Delete All</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Advanced Input Section -->
+        <div class="input-section">
+          <div class="input-wrapper">
+            <i class="fas fa-plus input-icon"></i>
+            <input type="text" id="taskInput" placeholder="What needs to be done?" maxlength="100">
+            <div class="task-options">
+              <select id="categorySelect" class="category-select">
+                <option value="">Category</option>
+                <option value="work">💼 Work</option>
+                <option value="personal">👤 Personal</option>
+                <option value="shopping">🛒 Shopping</option>
+                <option value="health">🏥 Health</option>
+                <option value="finance">💰 Finance</option>
+                <option value="education">📚 Education</option>
+                <option value="home">🏠 Home</option>
+                <option value="other">📝 Other</option>
+              </select>
+              <select id="prioritySelect" class="priority-select">
+                <option value="medium">⚪ Medium</option>
+                <option value="high">🔴 High</option>
+                <option value="low">🟢 Low</option>
+                <option value="urgent">🚨 Urgent</option>
+              </select>
+              <input type="date" id="dueDateInput" class="due-date-input">
+            </div>
+            <button id="addTaskBtn" class="add-btn">
+              <i class="fas fa-plus"></i>
+              <span>Add Task</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Enhanced Stats Section -->
+        <div class="stats-section">
+          <div class="stat-item">
+            <span class="stat-number" id="totalTasks">0</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="completedTasks">0</span>
+            <span class="stat-label">Completed</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="pendingTasks">0</span>
+            <span class="stat-label">Pending</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="overdueTasks">0</span>
+            <span class="stat-label">Overdue</span>
+          </div>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="filters-section">
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">
+              <i class="fas fa-list"></i> All
+            </button>
+            <button class="filter-btn" data-filter="pending">
+              <i class="fas fa-clock"></i> Pending
+            </button>
+            <button class="filter-btn" data-filter="completed">
+              <i class="fas fa-check"></i> Completed
+            </button>
+            <button class="filter-btn" data-filter="overdue">
+              <i class="fas fa-exclamation-triangle"></i> Overdue
+            </button>
+          </div>
+          <div class="filter-group">
+            <select id="categoryFilter" class="filter-select">
+              <option value="">All Categories</option>
+              <option value="work">💼 Work</option>
+              <option value="personal">👤 Personal</option>
+              <option value="shopping">🛒 Shopping</option>
+              <option value="health">🏥 Health</option>
+              <option value="finance">💰 Finance</option>
+              <option value="education">📚 Education</option>
+              <option value="home">🏠 Home</option>
+              <option value="other">📝 Other</option>
+            </select>
+            <select id="priorityFilter" class="filter-select">
+              <option value="">All Priorities</option>
+              <option value="urgent">🚨 Urgent</option>
+              <option value="high">🔴 High</option>
+              <option value="medium">⚪ Medium</option>
+              <option value="low">🟢 Low</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="tasks-section">
+          <ul id="taskList" class="task-list"></ul>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+          <i class="fas fa-clipboard-list"></i>
+          <h3>No tasks found</h3>
+          <p>Add your first task to get started!</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-rocket"></i> TaskMaster Pro</h3>
+          <p>Professional task management for modern productivity. Organize your life, one task at a time.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#" id="featuresLink">Features</a></li>
+            <li><a href="#" id="pricingLink">Pricing</a></li>
+            <li><a href="#" id="roadmapLink">Roadmap</a></li>
+            <li><a href="#" id="changelogLink">Changelog</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#" id="helpCenterLink">Help Center</a></li>
+            <li><a href="#" id="contactLink">Contact Us</a></li>
+            <li><a href="#" id="faqLink">FAQ</a></li>
+            <li><a href="#" id="feedbackLink">Feedback</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#" id="aboutLink">About</a></li>
+            <li><a href="#" id="privacyLink">Privacy Policy</a></li>
+            <li><a href="#" id="termsLink">Terms of Service</a></li>
+            <li><a href="#" id="cookiesLink">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 TaskMaster Pro. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#" id="privacyFooterLink">Privacy</a>
+          <a href="#" id="termsFooterLink">Terms</a>
+          <a href="#" id="contactFooterLink">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-cog"></i> Settings</h2>
+        <button class="close-btn" id="closeSettings">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <h3>Display Options</h3>
+          <label class="setting-item">
+            <input type="checkbox" id="showCompleted" checked>
+            <span>Show completed tasks</span>
+          </label>
+          <label class="setting-item">
+            <input type="checkbox" id="showDueDates" checked>
+            <span>Show due dates</span>
+          </label>
+          <label class="setting-item">
+            <input type="checkbox" id="showCategories" checked>
+            <span>Show categories</span>
+          </label>
+        </div>
+        <div class="setting-group">
+          <h3>Data Management</h3>
+          <button class="danger-btn" id="exportData">
+            <i class="fas fa-download"></i> Export Data
+          </button>
+          <button class="danger-btn" id="importData">
+            <i class="fas fa-upload"></i> Import Data
+          </button>
+          <button class="danger-btn" id="clearAllData">
+            <i class="fas fa-trash"></i> Clear All Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help & Support Modal -->
+  <div class="modal" id="helpModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-question-circle"></i> Help & Support</h2>
+        <button class="close-btn" id="closeHelp">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="help-section">
+          <h3>Quick Help</h3>
+          <div class="help-item">
+            <h4><i class="fas fa-plus"></i> Adding Tasks</h4>
+            <p>Type your task in the input field, select category and priority, then click "Add Task" or press Enter.</p>
+          </div>
+          <div class="help-item">
+            <h4><i class="fas fa-search"></i> Searching</h4>
+            <p>Use the search bar to find tasks by text or category. Results update in real-time.</p>
+          </div>
+          <div class="help-item">
+            <h4><i class="fas fa-filter"></i> Filtering</h4>
+            <p>Use the filter buttons and dropdowns to view specific tasks by status, category, or priority.</p>
+          </div>
+          <div class="help-item">
+            <h4><i class="fas fa-check"></i> Completing Tasks</h4>
+            <p>Click the circle next to any task to mark it as completed. Completed tasks show with a strikethrough.</p>
+          </div>
+        </div>
+        
+        <div class="help-section">
+          <h3>Contact Support</h3>
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>support@taskmasterpro.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>+1 (555) 123-4567</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-clock"></i>
+              <span>24/7 Support Available</span>
+            </div>
+          </div>
+          <button class="contact-btn" id="contactSupportBtn">
+            <i class="fas fa-envelope"></i> Send Message
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div class="modal" id="contactModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+        <button class="close-btn" id="closeContact">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <label for="contactName">Name</label>
+            <input type="text" id="contactName" required>
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email</label>
+            <input type="email" id="contactEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="contactSubject">Subject</label>
+            <select id="contactSubject" required>
+              <option value="">Select a subject</option>
+              <option value="general">General Inquiry</option>
+              <option value="support">Technical Support</option>
+              <option value="feature">Feature Request</option>
+              <option value="bug">Bug Report</option>
+              <option value="feedback">Feedback</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">Message</label>
+            <textarea id="contactMessage" rows="5" required placeholder="Tell us how we can help you..."></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="cancelContact">Cancel</button>
+            <button type="submit" class="btn-primary">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal" id="privacyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-shield-alt"></i> Privacy Policy</h2>
+        <button class="close-btn" id="closePrivacy">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="policy-content">
+          <h3>Data Collection</h3>
+          <p>TaskMaster Pro stores your task data locally in your browser. We do not collect, store, or transmit your personal data to our servers.</p>
+          
+          <h3>Local Storage</h3>
+          <p>Your tasks, settings, and preferences are stored in your browser's localStorage. This data remains on your device and is not shared with us.</p>
+          
+          <h3>Third-Party Services</h3>
+          <p>We use Font Awesome for icons and Google Fonts for typography. These services may collect usage analytics.</p>
+          
+          <h3>Data Export</h3>
+          <p>You can export your data at any time using the settings panel. This creates a JSON file containing all your tasks and settings.</p>
+          
+          <h3>Contact</h3>
+          <p>If you have questions about our privacy practices, please contact us at privacy@taskmasterpro.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms of Service Modal -->
+  <div class="modal" id="termsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-file-contract"></i> Terms of Service</h2>
+        <button class="close-btn" id="closeTerms">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="terms-content">
+          <h3>Acceptance of Terms</h3>
+          <p>By using TaskMaster Pro, you agree to these terms of service and our privacy policy.</p>
+          
+          <h3>Service Description</h3>
+          <p>TaskMaster Pro is a web-based task management application that helps users organize and track their tasks and projects.</p>
+          
+          <h3>User Responsibilities</h3>
+          <p>You are responsible for maintaining the confidentiality of your data and for all activities that occur under your use of the service.</p>
+          
+          <h3>Data Security</h3>
+          <p>We implement appropriate security measures to protect your data. However, no method of transmission over the internet is 100% secure.</p>
+          
+          <h3>Limitation of Liability</h3>
+          <p>TaskMaster Pro is provided "as is" without warranties of any kind. We are not liable for any damages arising from the use of our service.</p>
+          
+          <h3>Changes to Terms</h3>
+          <p>We reserve the right to modify these terms at any time. Continued use of the service constitutes acceptance of updated terms.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal" id="confirmModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="confirmTitle">Confirm Action</h2>
+        <button class="close-btn" id="closeConfirm">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Are you sure you want to perform this action?</p>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="cancelAction">Cancel</button>
+          <button class="btn-danger" id="confirmAction">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../script.js/script.js"></script>
+</body>
+</html>
